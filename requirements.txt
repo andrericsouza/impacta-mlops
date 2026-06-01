@@ -7,3 +7,4 @@ ydata-profiling==4.18.4
 statsmodels==0.14.6
 ipykernel==7.2.0
 mlflow==3.12.0
+pytest==9.0.3

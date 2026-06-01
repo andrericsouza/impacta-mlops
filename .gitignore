@@ -18,6 +18,7 @@ data/
 *.sqlite
 mlflow.db
 mlruns/
+mlartifacts/
 
 # OS files
 .DS_Store

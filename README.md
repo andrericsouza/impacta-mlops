@@ -1,188 +1,291 @@
-# Atividade 1 - MLOps (Faculdade Impacta)
 
-![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python)
-![MLflow](https://img.shields.io/badge/MLflow-Tracking-00AEEF)
+# Projeto MLOps - Previsão de Preço de Diamantes
+
+![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)  
+![MLflow](https://img.shields.io/badge/MLflow-Tracking-00AEEF)  
+![Pytest](https://img.shields.io/badge/Pytest-Testing-green)  
 ![MLOps](https://img.shields.io/badge/MLOps-Laboratory-orange)
 
+Projeto desenvolvido durante a disciplina **MLOps - Running ML in Production Environments** da Faculdade Impacta.
 
-Material de laboratório para a disciplina de MLOps da Faculdade Impacta. O repositório demonstra um fluxo prático: EDA, feature engineering, treino de modelo e registro de experimentos com MLflow — pensado também como peça de portfólio.
+O objetivo deste projeto é demonstrar a evolução de um experimento de Machine Learning realizado em notebook para uma solução organizada, reproduzível e preparada para automação.
 
-![Capa da atividade](lab01.png)
+----------
 
----
+# Evolução do Projeto
 
-# O que você irá aprender
+## Aula 01
 
-Ao concluir esta atividade, você será capaz de:
+Implementação inicial do fluxo de Machine Learning:
 
-- Realizar uma Análise Exploratória de Dados (EDA) sistemática e documentada.
-- Construir pipelines reprodutíveis para limpeza e pré-processamento.
-- Treinar modelos de regressão (ex.: árvore) e avaliar com métricas relevantes.
-- Registrar experimentos e artefatos com MLflow.
-- Gerar relatórios automáticos de profiling (ydata-profiling/sweetviz).
-- (Opcional) Executar componentes localmente.
+-   EDA
+    
+-   Feature Engineering
+    
+-   Treinamento
+    
+-   Avaliação
+    
+-   Registro de experimentos com MLflow
+    
 
----
-
-# Arquitetura da Solução
-
-O fluxo do laboratório é simples e centrado em notebooks:
+Resultado:
 
 ```text
-	Dados (seaborn diamonds)
-		  │
-		  ▼
-	  EDA_diamond.ipynb
-		  │
-		  ▼
-	Pré-processamento (pipeline)
-		  │
-		  ▼
-	  01_train.ipynb  ---> (local model artifacts)
-		  │
-		  ▼
-	  02_train.ipynb  ---> (registra runs no MLflow)
-		  │
-		  ▼
-	  MLflow UI (tracking + artifacts)
+Notebook + MLflow
+
 ```
 
----
+----------
 
-# Tecnologias Utilizadas
+## Aula 02
 
-| Tecnologia | Finalidade |
-|------------|------------|
-| Python     | Linguagem de programação |
-| Jupyter Notebooks | Desenvolvimento e documentação interativa |
-| MLflow     | Tracking de experimentos, artifacts e model registry |
-| ydata-profiling / sweetviz | Relatórios automáticos de EDA |
+Organização do projeto:
 
----
+-   Estruturação de diretórios
+    
+-   Separação da lógica de dados
+    
+-   Criação de módulos Python
+    
+-   Controle de dependências
+    
+-   Primeiro teste automatizado com Pytest
+    
 
-# Estrutura do Repositório
+Resultado:
 
 ```text
-.
-├── EDA_diamond.ipynb
-├── 01_train.ipynb
-├── 02_train.ipynb
-├── docs/MLFLOW_SETUP.md
+Projeto organizado e reutilizável
+
+```
+
+----------
+
+## Próximas Etapas
+
+### Aula 03
+
+-   Pipeline de treinamento
+    
+-   GitHub Actions
+    
+-   Testes automatizados
+    
+
+### Aula 04
+
+-   Deploy
+    
+-   Monitoramento
+    
+-   Encerramento do projeto
+    
+
+----------
+
+# Arquitetura Atual
+
+```text
+                 ┌─────────────┐
+                 │  Notebook   │
+                 └──────┬──────┘
+                        │
+                        ▼
+                 ┌─────────────┐
+                 │ src/data.py │
+                 └──────┬──────┘
+                        │
+                        ▼
+                 ┌─────────────┐
+                 │ Train/Test  │
+                 └──────┬──────┘
+                        │
+                        ▼
+                 ┌─────────────┐
+                 │   MLflow    │
+                 └──────┬──────┘
+                        │
+                        ▼
+                 ┌─────────────┐
+                 │ Experiments │
+                 └─────────────┘
+
+```
+
+----------
+
+# Estrutura Atual
+
+```text
+impacta-mlops/
+
+├── notebooks/
+│   ├── EDA_diamond.ipynb
+│   ├── 01_train.ipynb
+│   └── 02_train.ipynb
+│
+├── src/
+│   ├── __init__.py
+│   └── data.py
+│
+├── tests/
+│   └── test_data.py
+│
+├── app/
+│
+├── mlruns/
+│
 ├── requirements.txt
-├── .gitignore
-└── assets/
-	└── lab01.svg
+├── README.md
+├── pytest.ini
+└── .gitignore
+
 ```
 
-| Arquivo | Descrição |
-|---------|-----------|
-| `EDA_diamond.ipynb` | Notebook com análise exploratória e comentários. |
-| `01_train.ipynb` | Treinamento do modelo (sem tracking). |
-| `02_train.ipynb` | Treinamento com registro de experimentos no MLflow. |
-| `docs/MLFLOW_SETUP.md` | Guia para instalação e execução do MLflow local. |
+----------
 
----
+# Módulo de Dados
 
-# Descrição da Atividade
+O arquivo:
 
-O objetivo é prever o preço dos diamantes (variável `price`) usando atributos como `carat`, `cut`, `color`, `clarity`, `x`, `y`, `z`, `depth`, `table`. O material foca em:
+```text
+src/data.py
 
-- Exploração e limpeza dos dados.
-- Criação de features (ex.: `volume = x*y*z`).
-- Treinamento e avaliação de modelos de regressão.
-- Registro e comparação de runs no MLflow.
+```
 
----
+centraliza toda a lógica relacionada aos dados.
 
-# Fluxo de Trabalho (resumo)
+Funções disponíveis:
 
-1. Abrir `EDA_diamond.ipynb` e executar células de EDA e limpeza.
-2. Implementar transformações e salvar pipeline reutilizável.
-3. Rodar `01_train.ipynb` para treinar e avaliar localmente.
-4. Rodar `02_train.ipynb` para registrar os experiments no MLflow.
-5. Abrir MLflow UI e comparar runs / baixar artefatos.
+```python
+load_diamonds()
 
----
+split_features_target()
 
-# Pré-requisitos
+train_test_split_diamonds()
 
-- Python 3.8+ (recomendado 3.10+)
-- pip
-- (Opcional) Docker Desktop para executar Tracking Server em container
-- Git (opcional)
+```
 
----
+Benefícios:
 
-# Execução Local
+-   Reutilização
+    
+-   Padronização
+    
+-   Menos código nos notebooks
+    
+-   Maior reprodutibilidade
+    
 
-## 1. Criar ambiente virtual (opcional)
+----------
 
-```powershell
+# Testes Automatizados
+
+O projeto possui seu primeiro teste automatizado.
+
+Arquivo:
+
+```text
+tests/test_data.py
+
+```
+
+Executar:
+
+```bash
+pytest
+
+```
+
+Resultado esperado:
+
+```text
+1 passed
+
+```
+
+----------
+
+# MLflow
+
+Os experimentos continuam sendo registrados utilizando MLflow.
+
+Executar interface:
+
+```bash
+mlflow ui
+
+```
+
+Acessar:
+
+```text
+http://localhost:5000
+
+```
+
+Através da interface é possível:
+
+-   Comparar execuções
+    
+-   Visualizar métricas
+    
+-   Analisar parâmetros
+    
+-   Consultar artefatos gerados
+    
+
+----------
+
+# Instalação
+
+Criar ambiente virtual:
+
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+
 ```
 
-## 2. Instalar dependências
+Ativar:
 
-```powershell
+```bash
+.\.venv\Scripts\activate
+
+```
+
+Instalar dependências:
+
+```bash
 pip install uv
+
 uv pip install -r requirements.txt
+
 ```
 
-## 3. Executar notebooks
-
-Abra JupyterLab/Notebook e execute `EDA_diamond.ipynb`, `01_train.ipynb` e `02_train.ipynb` na ordem.
-
-## 4. Iniciar MLflow UI (para `02_train.ipynb`)
-
-```powershell
-mlflow ui --port 5000
-# abrir http://127.0.0.1:5000
-```
-
----
+----------
 
 # Conceitos Trabalhados
 
-- EDA e qualidade de dados
-- Feature engineering e transformações
-- Pipeline reprodutível (sklearn)
-- Treinamento e avaliação de modelos de regressão
-- Tracking de experimentos com MLflow
-- Relatórios automáticos de profiling
+-   EDA
+    
+-   Feature Engineering
+    
+-   Reprodutibilidade
+    
+-   Versionamento
+    
+-   Organização de Projetos
+    
+-   MLflow
+    
+-   Pytest
+    
+-   MLOps
+    
 
----
+----------
 
-# Exercícios Propostos
+# Próximo Passo
 
-1. Criar `volume = x*y*z`, testar correlação e impacto no modelo.
-2. Gerar relatório `ydata-profiling` e incluir em `reports/`.
-3. Adicionar explicabilidade com SHAP e documentar insights.
-4. Versionar dados com DVC e salvar artefatos em storage remoto (opcional).
-
----
-
-# Solução de Problemas
-
-## MLflow UI não aparece na porta 5000
-
-Verifique se a porta está ocupada:
-
-```powershell
-netstat -ano | findstr :5000
-```
-
-## Erros ao instalar dependências
-
-Atualize o `pip` e use um ambiente virtual:
-
-```powershell
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-
----
-
-# Conclusão
-
-Este repositório serve tanto como material de laboratório quanto como um exemplo prático para portfólio.
+Na Aula 03 iremos automatizar o treinamento e integrar o projeto ao GitHub Actions, criando o primeiro pipeline automatizado do projeto.
