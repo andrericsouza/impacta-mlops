@@ -35,3 +35,5 @@ pip-wheel-metadata/
 
 # Others
 *.pyc
+
+mlartifacts/
