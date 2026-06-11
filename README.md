@@ -1,14 +1,20 @@
 
 # Projeto MLOps - Previsão de Preço de Diamantes
 
-![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)  
-![MLflow](https://img.shields.io/badge/MLflow-Tracking-00AEEF)  
-![Pytest](https://img.shields.io/badge/Pytest-Testing-green)  
+![CI Pipeline](https://github.com/andrericsouza/impacta-mlops/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
+![MLflow](https://img.shields.io/badge/MLflow-Tracking-00AEEF)
+![Pytest](https://img.shields.io/badge/Pytest-Testing-green)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI-blue?logo=githubactions)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Pipeline-F7931E?logo=scikitlearn)
 ![MLOps](https://img.shields.io/badge/MLOps-Laboratory-orange)
+
+![Capa da atividade](lab03.png)
 
 Projeto desenvolvido durante a disciplina **MLOps - Running ML in Production Environments** da Faculdade Impacta.
 
-O objetivo deste projeto é demonstrar a evolução de um experimento de Machine Learning realizado em notebook para uma solução organizada, reproduzível e preparada para automação.
+O objetivo deste projeto é demonstrar a evolução de um experimento de Machine Learning realizado em notebook para uma solução reproduzível, automatizada e preparada para execução em ambientes de produção.
 
 ----------
 
@@ -19,21 +25,15 @@ O objetivo deste projeto é demonstrar a evolução de um experimento de Machine
 Implementação inicial do fluxo de Machine Learning:
 
 -   EDA
-    
 -   Feature Engineering
-    
 -   Treinamento
-    
 -   Avaliação
-    
 -   Registro de experimentos com MLflow
-    
 
 Resultado:
 
-```text
+```
 Notebook + MLflow
-
 ```
 
 ----------
@@ -43,83 +43,98 @@ Notebook + MLflow
 Organização do projeto:
 
 -   Estruturação de diretórios
-    
 -   Separação da lógica de dados
-    
 -   Criação de módulos Python
-    
 -   Controle de dependências
-    
--   Primeiro teste automatizado com Pytest
-    
+-   Primeiro teste automatizado
 
 Resultado:
 
-```text
+```
 Projeto organizado e reutilizável
-
 ```
 
 ----------
 
-## Próximas Etapas
+## Aula 03
 
-### Aula 03
+Automação do ciclo de Machine Learning:
 
 -   Pipeline de treinamento
-    
+-   OneHotEncoder
+-   RandomForest
+-   Argparse
+-   MLflow Tracking
+-   Model Registry
+-   Streamlit
 -   GitHub Actions
-    
 -   Testes automatizados
-    
+
+Resultado:
+
+```
+Pipeline Automatizado de Machine Learning
+```
+
+----------
+
+## Próxima Etapa
 
 ### Aula 04
 
 -   Deploy
-    
 -   Monitoramento
-    
+-   Data Drift
+-   Observabilidade
 -   Encerramento do projeto
-    
 
 ----------
 
 # Arquitetura Atual
 
-```text
-                 ┌─────────────┐
-                 │  Notebook   │
-                 └──────┬──────┘
-                        │
-                        ▼
-                 ┌─────────────┐
-                 │ src/data.py │
-                 └──────┬──────┘
-                        │
-                        ▼
-                 ┌─────────────┐
-                 │ Train/Test  │
-                 └──────┬──────┘
-                        │
-                        ▼
-                 ┌─────────────┐
-                 │   MLflow    │
-                 └──────┬──────┘
-                        │
-                        ▼
-                 ┌─────────────┐
-                 │ Experiments │
-                 └─────────────┘
-
+```
+                    ┌──────────────┐
+                    │   Notebook   │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │  src/data.py │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │ Pipeline ML  │
+                    │ OneHotEncoder│
+                    │ RandomForest │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   MLflow     │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   Registry   │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │  Streamlit   │
+                    └──────────────┘
 ```
 
 ----------
 
-# Estrutura Atual
+# Estrutura do Projeto
 
-```text
+```
 impacta-mlops/
 
+├── app/
+│   └── app.py
+│
 ├── notebooks/
 │   ├── EDA_diamond.ipynb
 │   ├── 01_train.ipynb
@@ -127,12 +142,18 @@ impacta-mlops/
 │
 ├── src/
 │   ├── __init__.py
-│   └── data.py
+│   ├── data.py
+│   ├── model.py
+│   ├── evaluate.py
+│   └── train.py
 │
 ├── tests/
-│   └── test_data.py
+│   ├── test_data.py
+│   └── test_model.py
 │
-├── app/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 │
 ├── mlruns/
 │
@@ -140,101 +161,175 @@ impacta-mlops/
 ├── README.md
 ├── pytest.ini
 └── .gitignore
-
 ```
 
 ----------
 
-# Módulo de Dados
+# Pipeline de Machine Learning
 
-O arquivo:
+O treinamento foi encapsulado em um Pipeline do Scikit-Learn.
 
-```text
-src/data.py
+Etapas:
 
 ```
-
-centraliza toda a lógica relacionada aos dados.
-
-Funções disponíveis:
-
-```python
-load_diamonds()
-
-split_features_target()
-
-train_test_split_diamonds()
-
+Dados
+↓
+OneHotEncoder
+↓
+RandomForestRegressor
+↓
+Predição
 ```
 
 Benefícios:
 
--   Reutilização
-    
+-   Reprodutibilidade
 -   Padronização
-    
--   Menos código nos notebooks
-    
--   Maior reprodutibilidade
-    
+-   Menos código manual
+-   Preparação para produção
 
 ----------
 
-# Testes Automatizados
+# Execução do Treinamento
 
-O projeto possui seu primeiro teste automatizado.
-
-Arquivo:
-
-```text
-tests/test_data.py
+Treinamento padrão:
 
 ```
-
-Executar:
-
-```bash
-pytest
-
+python -m src.train
 ```
 
-Resultado esperado:
+Treinamento com hiperparâmetro:
 
-```text
-1 passed
+```
+python -m src.train --max_depth 5
+```
 
+Exemplo:
+
+```
+python -m src.train --max_depth 8
 ```
 
 ----------
 
 # MLflow
 
-Os experimentos continuam sendo registrados utilizando MLflow.
+Iniciar o servidor:
 
-Executar interface:
-
-```bash
-mlflow ui
-
+```
+mlflow server
 ```
 
 Acessar:
 
-```text
+```
 http://localhost:5000
-
 ```
 
-Através da interface é possível:
+Recursos utilizados:
 
--   Comparar execuções
-    
--   Visualizar métricas
-    
--   Analisar parâmetros
-    
--   Consultar artefatos gerados
-    
+-   Tracking
+-   Experiments
+-   Metrics
+-   Parameters
+-   Model Registry
+
+----------
+
+# Model Registry
+
+Após comparar os experimentos, o melhor modelo pode ser registrado.
+
+Exemplo:
+
+```
+diamonds_price_model
+```
+
+O Registry permite:
+
+-   Versionamento
+-   Governança
+-   Rastreabilidade
+-   Gestão do ciclo de vida do modelo
+
+----------
+
+# Aplicação Streamlit
+
+Executar:
+
+```
+streamlit run app/app.py
+```
+
+Acessar:
+
+```
+http://localhost:8501
+```
+
+Fluxo:
+
+```
+Usuário
+↓
+Streamlit
+↓
+MLflow Registry
+↓
+Modelo
+↓
+Previsão
+```
+
+----------
+
+# Testes Automatizados
+
+Executar:
+
+```
+pytest
+```
+
+Resultado esperado:
+
+```
+3 passed
+```
+
+Os testes validam:
+
+-   Carregamento dos dados
+-   Separação de treino e teste
+-   Pipeline de Machine Learning
+
+----------
+
+# Integração Contínua
+
+O projeto utiliza GitHub Actions.
+
+Pipeline:
+
+```
+Git Push
+↓
+GitHub Actions
+↓
+Black
+↓
+Pytest
+↓
+Aprovação
+```
+
+Arquivo:
+
+```
+.github/workflows/ci.yml
+```
 
 ----------
 
@@ -242,25 +337,22 @@ Através da interface é possível:
 
 Criar ambiente virtual:
 
-```bash
+```
 python -m venv .venv
-
 ```
 
 Ativar:
 
-```bash
+```
 .\.venv\Scripts\activate
-
 ```
 
 Instalar dependências:
 
-```bash
+```
 pip install uv
 
 uv pip install -r requirements.txt
-
 ```
 
 ----------
@@ -268,24 +360,28 @@ uv pip install -r requirements.txt
 # Conceitos Trabalhados
 
 -   EDA
-    
 -   Feature Engineering
-    
 -   Reprodutibilidade
-    
 -   Versionamento
-    
 -   Organização de Projetos
-    
+-   Pipeline de Machine Learning
 -   MLflow
-    
+-   Model Registry
+-   Streamlit
 -   Pytest
-    
+-   GitHub Actions
+-   Continuous Integration
 -   MLOps
-    
 
 ----------
 
 # Próximo Passo
 
-Na Aula 03 iremos automatizar o treinamento e integrar o projeto ao GitHub Actions, criando o primeiro pipeline automatizado do projeto.
+Na Aula 04 iremos colocar o modelo em um cenário próximo da produção e discutir:
+
+-   Deploy
+-   Monitoramento
+-   Data Drift
+-   Observabilidade
+-   Governança Operacional
+-   Evolução contínua de modelos
